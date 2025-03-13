@@ -6,8 +6,12 @@ let greeting = ref('');
 async function handleSubmit(e) {
   e.preventDefault();
   const target = e.target;
-  const name = target.querySelector('#name').value;
-  await icp_workshops_backend.greet(name).then((response) => {
+  const text = target.querySelector('#text').value;
+  await icp_workshops_backend.translate(text).then((response) => {
+
+    if ("Err" in response) { return alert(response.Err)}
+
+        greeting.value = response.Ok;
     greeting.value = response;
   });
 }
@@ -19,8 +23,8 @@ async function handleSubmit(e) {
     <br />
     <br />
     <form action="#" @submit="handleSubmit">
-      <label for="name">Enter your name: &nbsp;</label>
-      <input id="name" alt="Name" type="text" />
+      <label for="text">Translate: &nbsp;</label>
+      <input id="text" alt="text" type="text" />
       <button type="submit">Click Me!</button>
     </form>
     <section id="greeting">{{ greeting }}</section>
